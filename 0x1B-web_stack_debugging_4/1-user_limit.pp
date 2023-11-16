@@ -1,6 +1,10 @@
-#This script increases number of worker_processes
-exec { 'increase nginx worker processes':
-  command => "sed -i '$ i/* soft    nofile  1000' /etc/security/limits.conf;
-sed -i '$ i/* hard    nofile  100000' /etc/security/limits.conf;",
-  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-  }
+# changes the OS configuration so that it is posible to login with the holberton user and open a file without any error message
+exec { 'change soft limit':
+    command  => 'sudo sed -i "s/holberton\ssoft.*/holberton\tsoft\tnofile\t10000/" /etc/security/limits.conf',
+    provider => shell,
+}
+
+exec { 'change hard limit':
+    command  => 'sudo sed -i "s/holberton\shard.*/holberton\thard\tnofile\t100000/" /etc/security/limits.conf',
+    provider => shell,
+}
